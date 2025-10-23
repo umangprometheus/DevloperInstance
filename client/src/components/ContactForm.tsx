@@ -3,7 +3,13 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useMutation } from "@tanstack/react-query";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -95,10 +101,16 @@ export function ContactForm() {
               <CheckCircle2 className="h-8 w-8 text-chart-2" />
             </div>
           </div>
-          <h3 className="text-2xl font-semibold mb-3" data-testid="text-success-title">
+          <h3
+            className="text-2xl font-semibold mb-3"
+            data-testid="text-success-title"
+          >
             Message Sent Successfully!
           </h3>
-          <p className="text-muted-foreground mb-2" data-testid="text-success-message">
+          <p
+            className="text-muted-foreground mb-2"
+            data-testid="text-success-message"
+          >
             Thank you for reaching out. We'll get back to you within 24 hours.
           </p>
           <p className="text-sm text-muted-foreground">
@@ -112,7 +124,7 @@ export function ContactForm() {
   return (
     <Card className="shadow-xl" id="contact-form">
       <CardHeader className="space-y-2 pb-6">
-        <CardTitle className="text-2xl">Send us a message</CardTitle>
+        <CardTitle className="text-2xl">Send us a messages</CardTitle>
         <CardDescription>
           Fill out the form below and we'll get back to you as soon as possible.
         </CardDescription>
@@ -170,16 +182,44 @@ export function ContactForm() {
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger className="h-12" data-testid="select-subject">
+                      <SelectTrigger
+                        className="h-12"
+                        data-testid="select-subject"
+                      >
                         <SelectValue placeholder="Select a subject" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="general" data-testid="select-subject-general">General Inquiry</SelectItem>
-                      <SelectItem value="support" data-testid="select-subject-support">Technical Support</SelectItem>
-                      <SelectItem value="feedback" data-testid="select-subject-feedback">Feedback</SelectItem>
-                      <SelectItem value="partnership" data-testid="select-subject-partnership">Partnership</SelectItem>
-                      <SelectItem value="other" data-testid="select-subject-other">Other</SelectItem>
+                      <SelectItem
+                        value="general"
+                        data-testid="select-subject-general"
+                      >
+                        General Inquiry
+                      </SelectItem>
+                      <SelectItem
+                        value="support"
+                        data-testid="select-subject-support"
+                      >
+                        Technical Support
+                      </SelectItem>
+                      <SelectItem
+                        value="feedback"
+                        data-testid="select-subject-feedback"
+                      >
+                        Feedback
+                      </SelectItem>
+                      <SelectItem
+                        value="partnership"
+                        data-testid="select-subject-partnership"
+                      >
+                        Partnership
+                      </SelectItem>
+                      <SelectItem
+                        value="other"
+                        data-testid="select-subject-other"
+                      >
+                        Other
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -203,7 +243,10 @@ export function ContactForm() {
                   </FormControl>
                   <FormDescription className="flex justify-between items-center">
                     <span>Share your thoughts, questions, or feedback.</span>
-                    <span className="text-xs" data-testid="text-character-count">
+                    <span
+                      className="text-xs"
+                      data-testid="text-character-count"
+                    >
                       {messageLength}/500
                     </span>
                   </FormDescription>
