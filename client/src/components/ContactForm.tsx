@@ -124,7 +124,9 @@ export function ContactForm() {
   return (
     <Card className="shadow-xl" id="contact-form">
       <CardHeader className="space-y-2 pb-6">
-        <CardTitle className="text-2xl">Send us a message</CardTitle>
+        <CardTitle className="text-2xl">
+          Send us a message for testing
+        </CardTitle>
         <CardDescription>
           Fill out the form below and we'll get back to you as soon as possible.
         </CardDescription>
