@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useMutation } from "@tanstack/react-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,6 +25,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { CheckCircle2, Loader2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { apiRequest } from "@/lib/queryClient";
 
 const contactFormSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -41,8 +44,8 @@ const contactFormSchema = z.object({
 type ContactFormValues = z.infer<typeof contactFormSchema>;
 
 export function ContactForm() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const { toast } = useToast();
 
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
@@ -55,21 +58,32 @@ export function ContactForm() {
     },
   });
 
+  const submitMutation = useMutation({
+    mutationFn: async (data: Omit<ContactFormValues, "agreeToPrivacy">) => {
+      const response = await apiRequest("POST", "/api/contact", data);
+      return response.json();
+    },
+    onSuccess: () => {
+      setIsSuccess(true);
+      setTimeout(() => {
+        setIsSuccess(false);
+        form.reset();
+      }, 3000);
+    },
+    onError: (error: Error) => {
+      toast({
+        variant: "destructive",
+        title: "Failed to send message",
+        description: error.message || "Something went wrong. Please try again.",
+      });
+    },
+  });
+
   const messageLength = form.watch("message")?.length || 0;
 
   const onSubmit = async (data: ContactFormValues) => {
-    setIsSubmitting(true);
-    console.log("Form submitted:", data);
-    
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    
-    setIsSubmitting(false);
-    setIsSuccess(true);
-    
-    setTimeout(() => {
-      setIsSuccess(false);
-      form.reset();
-    }, 3000);
+    const { agreeToPrivacy, ...submissionData } = data;
+    submitMutation.mutate(submissionData);
   };
 
   if (isSuccess) {
@@ -230,10 +244,10 @@ export function ContactForm() {
             <Button
               type="submit"
               className="w-full h-12"
-              disabled={isSubmitting}
+              disabled={submitMutation.isPending}
               data-testid="button-submit"
             >
-              {isSubmitting ? (
+              {submitMutation.isPending ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Sending...
